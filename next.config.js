@@ -19,6 +19,20 @@ module.exports = {
         port,
         pathname: `${pathname}/**`,
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: `/wp-content/uploads/**/**/**`,
+      },
+      {
+        protocol: 'http',
+        hostname: '2.gravatar.com',
+        port: '',
+        pathname: `/avatar/**`,
+      },
+      
     ],
   },
 };
+

@@ -58,6 +58,84 @@ export async function getAllPostsWithSlug() {
   return data?.posts;
 }
 
+export async function getAllCategoriesWithSlug() {
+  const data = await fetchAPI(`
+{
+  categories(first: 1000) {
+    edges {
+      node {
+        slug
+      }
+    }
+  }
+}
+  `);
+  return data?.categories;
+}
+
+export async function getAllPostsByCategory(categorySlug: String) {
+  const data = await fetchAPI(`
+      fragment AuthorFields on User {
+        name
+        firstName
+        lastName
+        avatar {
+          url
+        }
+      }
+
+      fragment PostFields on Post {
+        title
+        excerpt
+        slug
+        date
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        author {
+          node {
+            ...AuthorFields
+          }
+        }
+        categories {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+        tags {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+      }
+
+      query PostBySlug {
+        posts(
+          first: 3
+          where: {orderby: {field: DATE, order: DESC}, categoryName: "test"}
+        ) {
+          edges {
+            node {
+              ...PostFields
+            }
+          }
+        }
+      }
+    `, {
+    variables: {
+      categorySlug,
+    },
+  });
+
+  return data?.posts;
+}
+
 export async function getAllPostsForHome(preview) {
   const data = await fetchAPI(
     `
