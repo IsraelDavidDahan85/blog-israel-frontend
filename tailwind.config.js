@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -12,6 +14,17 @@ module.exports = {
         "accent-7": "#333",
         success: "#0070f3",
         cyan: "#79FFE1",
+        gray: {
+          100: "#f7f7f7",
+          200: "#e1e1e1",
+          300: "#cfcfcf",
+          400: "#b1b1b1",
+          500: "#757575",
+          600: "#636363",
+          700: "#494949",
+          800: "#333",
+          900: "#1a1a1a",
+        }
       },
       spacing: {
         28: "7rem",
@@ -31,6 +44,9 @@ module.exports = {
       boxShadow: {
         small: "0 5px 10px rgba(0, 0, 0, 0.12)",
         medium: "0 8px 30px rgba(0, 0, 0, 0.12)",
+      },
+      fontFamily: {
+        'sans': ['Open Sans', ...defaultTheme.fontFamily.sans],
       },
     },
   },

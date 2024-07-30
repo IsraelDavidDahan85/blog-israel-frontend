@@ -26,6 +26,18 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
   return json.data;
 }
 
+export async function getSettings(){
+  const data = await fetchAPI(`
+    {
+      generalSettings {
+        title
+        description
+      }
+    }
+  `);
+  return data?.generalSettings;
+}
+
 export async function getPreviewPost(id, idType = "DATABASE_ID") {
   const data = await fetchAPI(
     `
@@ -60,20 +72,20 @@ export async function getAllPostsWithSlug() {
 
 export async function getAllCategoriesWithSlug() {
   const data = await fetchAPI(`
-{
-  categories(first: 1000) {
-    edges {
-      node {
-        slug
+    {
+      categories(first: 1000) {
+        edges {
+          node {
+            slug
+          }
+        }
       }
     }
-  }
-}
   `);
   return data?.categories;
 }
 
-export async function getAllPostsByCategory(categorySlug: String) {
+export async function getAllPostsByCategory(categoryName) {
   const data = await fetchAPI(`
       fragment AuthorFields on User {
         name
@@ -116,9 +128,13 @@ export async function getAllPostsByCategory(categorySlug: String) {
       }
 
       query PostBySlug {
+        generalSettings {
+          description
+          title
+        }
         posts(
           first: 3
-          where: {orderby: {field: DATE, order: DESC}, categoryName: "test"}
+          where: {orderby: {field: DATE, order: DESC}, categoryName: "${categoryName}"}
         ) {
           edges {
             node {
@@ -127,19 +143,20 @@ export async function getAllPostsByCategory(categorySlug: String) {
           }
         }
       }
-    `, {
-    variables: {
-      categorySlug,
-    },
-  });
+    `
+  );
 
-  return data?.posts;
+  return {posts: data?.posts, settings: data?.generalSettings};
 }
 
 export async function getAllPostsForHome(preview) {
   const data = await fetchAPI(
     `
     query AllPosts {
+      generalSettings {
+        description
+        title
+      }
       posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
@@ -162,6 +179,13 @@ export async function getAllPostsForHome(preview) {
                 }
               }
             }
+            terms {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
           }
         }
       }
@@ -175,7 +199,7 @@ export async function getAllPostsForHome(preview) {
     },
   );
 
-  return data?.posts;
+  return {allPosts: data?.posts, settings: data?.generalSettings};
 }
 
 export async function getPostAndMorePosts(slug, preview, previewData) {
@@ -228,6 +252,10 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
       }
     }
     query PostBySlug($id: ID!, $idType: PostIdType!) {
+      generalSettings {
+        description
+        title
+      }
       post(id: $id, idType: $idType) {
         ...PostFields
         content

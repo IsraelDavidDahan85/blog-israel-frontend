@@ -2,6 +2,9 @@ import Avatar from "./avatar";
 import Date from "./date";
 import CoverImage from "./cover-image";
 import Link from "next/link";
+import Categories from "./categories";
+import PostDate from "./post-date";
+import Excerpt from "./excerpt";
 
 export default function PostPreview({
   title,
@@ -10,15 +13,11 @@ export default function PostPreview({
   excerpt,
   author,
   slug,
+  categories,
 }) {
   return (
-    <div>
-      <div className="mb-5">
-        {coverImage && (
-          <CoverImage title={title} coverImage={coverImage} slug={slug} />
-        )}
-      </div>
-      <h3 className="text-3xl mb-3 leading-snug">
+    <div >
+      <h3 className="text-3xl mb-3 leading-snug font-bold italic text-blue-500 hover:text-blue-900">
         <Link
           href={`/posts/${slug}`}
           className="hover:underline"
@@ -26,13 +25,26 @@ export default function PostPreview({
         ></Link>
       </h3>
       <div className="text-lg mb-4">
-        <Date dateString={date} />
+      
+        {/* {coverImage && (
+          <div className="m-2 col-span-1">
+          <CoverImage title={title} coverImage={coverImage} slug={slug} />
+          </div>
+        )} */}
+      
+      <div className="m-2">
+      <div className="text-lg mb-4 flex">
+        <Avatar author={author} />
+        <div className="ml-2"> <PostDate><Date dateString={date} /></PostDate></div>
+        <div className="ml-2">
+          {categories && (
+            <Categories categories={categories} />
+          )}
+          </div>
       </div>
-      <div
-        className="text-lg leading-relaxed mb-4"
-        dangerouslySetInnerHTML={{ __html: excerpt }}
-      />
-      <Avatar author={author} />
+      <Excerpt excerpt={excerpt} slug={slug} />
     </div>
+    </div>
+  </div>  
   );
 }
