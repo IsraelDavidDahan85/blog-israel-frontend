@@ -25,22 +25,23 @@ export default function Post({ post, posts, preview, settings }) {
 
   return (
     <Layout preview={preview}>
-      <Container>
-        <Header title={settings.title} description={settings.description}/>
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
+      {router.isFallback ? (
+        <PostTitle>Loading…</PostTitle>
+      ) : (
+        <>
+          <Head>
+            <title>
+              {`${post.title} | ${settings.description}`}
+            </title>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+            <meta
+              property="og:image"
+              content={post.featuredImage?.node.sourceUrl}
+            />
+          </Head>
+          <Container>
+            <Header title={settings.title} description={settings.description} />
             <article>
-              <Head>
-                <title>
-                  {`${post.title} | ${settings.description}`}
-                </title>
-                <meta
-                  property="og:image"
-                  content={post.featuredImage?.node.sourceUrl}
-                />
-              </Head>
               <PostHeader
                 title={post.title}
                 coverImage={post.featuredImage}
@@ -53,9 +54,9 @@ export default function Post({ post, posts, preview, settings }) {
                 {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
               </footer>
             </article>
-          </>
-        )}
-      </Container>
+          </Container>
+        </>
+      )}
     </Layout>
   );
 }

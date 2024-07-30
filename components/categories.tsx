@@ -1,4 +1,5 @@
 import { ca } from "date-fns/locale"
+import Link from "next/link";
 
 export default function Categories({ categories }) {
   const categoriesNew = categories.edges.filter((category) => category.node.name !== "Uncategorized");
@@ -7,8 +8,8 @@ export default function Categories({ categories }) {
       <span>
         <span className="ml-1 font-bold">{title}</span>
         {categories.map((category, index) => (
-          <span className="hover:text-gray-500" key={category.node.name}>
-            <a href={`/categories/${category.node.name}`}>{category.node.name}</a>
+          <span className="a-link" key={category.node.name}>
+            <Link href={`/categories/${category.node.name}`}>{category.node.name}</Link>
             {index < categoriesNew.length - 1 ? ', ' : ''}
           </span>
         ))}

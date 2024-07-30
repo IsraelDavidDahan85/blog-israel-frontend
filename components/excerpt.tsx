@@ -7,7 +7,7 @@ export default function Excerpt({ excerpt, slug }) {
         className="text-lg leading-relaxed mb-3"
         dangerouslySetInnerHTML={{ __html: excerpt }}
         />
-        <div className="text-lg text-blue-500 hover:text-blue-900"> <Link href={`/posts/${slug}`}>Read more</Link></div>
+        <div className="text-lg a-link"> <Link href={`/posts/${slug}`}>Read more</Link></div>
         </div>
  
     );

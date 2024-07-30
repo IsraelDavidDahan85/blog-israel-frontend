@@ -20,28 +20,30 @@ export default function Post({ posts, preview, settings, slug }) {
 
   return (
     <Layout preview={preview}>
-      <Container>
-        <Header title={settings.title} description={settings.description} />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>
-                  {`All posts in ${slug} | ${settings.title}`}
-                </title>
-                <meta
-                  property="og:image"
-                />
-              </Head>
-              <CategoryHeader category={slug}/> 
+      {router.isFallback ? (
+        <PostTitle>Loading…</PostTitle>
+      ) : (
+        <>
+          <Head>
+            <title>
+              {`All posts in ${slug} | ${settings.title}`}
+            </title>
+            <meta
+              property="og:image"
+            />
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+          </Head>
+          <Container>
+              <Header title={settings.title} description={settings.description} />
+            <article className="font-sans">
+
+              <CategoryHeader category={slug} />
               <div className="max-w-5xl mx-auto"> {posts.map(post => {
                 return (
                   <div className="mb-2" key={post.node.slug}>
                     <h1>
                       <a href={`/posts/${post.node.slug}`}>
-                        <span className="font-bold">{post.node.title}</span> // <Date dateString={post.node.date} /> // {post.node.author.node.name} 
+                        <span className="font-bold a-link">{post.node.title}</span> // <Date dateString={post.node.date} /> // {post.node.author.node.name}
                       </a>
                     </h1>
                   </div>
@@ -49,9 +51,9 @@ export default function Post({ posts, preview, settings, slug }) {
               })} </div>
 
             </article>
-          </>
-        )}
-      </Container>
+          </Container>
+        </>
+      )}
     </Layout>
   );
 }
